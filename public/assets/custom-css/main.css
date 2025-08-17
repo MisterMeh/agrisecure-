@@ -1,0 +1,116 @@
+/* Sidebar background to Bootstrap success */
+    .main-sidebar {
+        background-color: #198754 !important; /* Bootstrap 5 success */
+    }
+    /* Remove border under logo */
+    .brand-link {
+        border-bottom: none !important;
+    }
+    /* Active menu item: dark green */
+    .main-sidebar .nav-sidebar .nav-link.active {
+        background-color: #136234 !important; /* Darker green */
+        color: #fff !important;
+    }
+    /* Optional: Make nav icons white for contrast */
+    /* .main-sidebar .nav-sidebar .nav-link .nav-icon {
+        color: #fff !important;
+    } */
+    /* Hide sidebar completely when collapsed */
+    .sidebar-collapse .main-sidebar {
+        margin-left: -250px !important;
+        transition: margin-left 0.3s;
+    }
+    .sidebar-mini.sidebar-collapse .main-sidebar {
+        width: 0 !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+    }
+    .sidebar-mini.sidebar-collapse .content-wrapper,
+    .sidebar-mini.sidebar-collapse .main-footer,
+    .sidebar-mini.sidebar-collapse .main-header {
+        margin-left: 0 !important;
+        transition: margin-left 0.3s;
+    }
+
+    ::-webkit-scrollbar {
+    width: 10px;
+    background: #def5e2;
+}
+::-webkit-scrollbar-thumb {
+    background: #3cb371;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #2e8b57;
+}
+
+/* For Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #3cb371 #def5e2;
+}
+
+.btn-outline-success {
+    color: #28a745;
+    border-color: transparent;
+    color: rgb(51, 51, 51);
+    border-radius: 8px;
+    background-color: #c3efce;
+}
+
+/* Form Groups */
+.form-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+.form-control {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    padding-left: 35px;
+    background-color: transparent;
+    box-shadow: none !important;
+    -webkit-appearance: none; /* Removes default styling for Safari */
+            -moz-appearance: none;    /* Removes default styling for Firefox */
+            appearance: none; 
+}
+.form-control:focus {
+    border-bottom: 2px solid #4CAF50;
+}
+.form-group i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.login-color {
+    color: #41955f !important;
+}
+
+/* Custom dropdown arrow */
+        .form-group.has-dropdown::after {
+             /* Font Awesome chevron-down icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            
+            color: #aaa;
+            pointer-events: none; /* Allows clicks to pass through to the select element */
+            transition: color 0.3s ease;
+        }
+
+        /* Change arrow color on focus */
+        .form-control:focus ~ .form-group.has-dropdown::after {
+             color: #4CAF50;
+        }
+
+        .btn {
+            border-radius: 25px;
+        }
+
+
+
