@@ -112,24 +112,30 @@ class FileManagement extends Component
     }
 
     public function decryptAndDownload($isAdmin = false)
-{
-    if (!$isAdmin) {
-        $this->validate(['decryptionKey' => 'required|string']);
-    }
+    {
+        if (!$isAdmin) {
+            $this->validate(['decryptionKey' => 'required|string']);
+        }
 
-    try {
-        $key = $isAdmin ? $this->selectedFile->encryption_key : $this->decryptionKey;
-        $decryptedContent = Crypt::decrypt(Storage::get($this->selectedFile->file_path), $key);
-        $headers = ['Content-Type' => $this->selectedFile->file_type];
-       
-        return response()->streamDownload(function () use ($decryptedContent) {
-            echo $decryptedContent;
-        }, $this->selectedFile->original_filename, $headers);
 
-    } catch (DecryptException $e) {
-        $this->addError('decryptionKey', 'Invalid decryption key.');
+        if (!$isAdmin && $this->decryptionKey !== $this->selectedFile->encryption_key) {
+            $this->addError('decryptionKey', 'Invalid decryption key.');
+            return;
+        }
+
+        try {
+            $key = $isAdmin ? $this->selectedFile->encryption_key : $this->decryptionKey;
+            $decryptedContent = Crypt::decrypt(Storage::get($this->selectedFile->file_path), $key);
+            $headers = ['Content-Type' => $this->selectedFile->file_type];
+        
+            return response()->streamDownload(function () use ($decryptedContent) {
+                echo $decryptedContent;
+            }, $this->selectedFile->original_filename, $headers);
+
+        } catch (DecryptException $e) {
+            $this->addError('decryptionKey', 'Invalid decryption key.');
+        }
     }
-}
 
     public function viewFile($id)
     {
