@@ -12,7 +12,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        
         $recentUploads = File::where('created_at', '>=', Carbon::now()->subDay())->count();
         $totalFiles = File::count();
         $registeredEmployees = User::where('role', 0)->where('is_deleted', 0)->count();

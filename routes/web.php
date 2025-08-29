@@ -30,6 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin-file-management', function () {
         return view('admin/file-management');
     })->name('admin-file');
+    Route::get('/audit-logs', function () {
+        return view('admin/autditlogs');
+    })->name('audit-logs');
 
 });
 

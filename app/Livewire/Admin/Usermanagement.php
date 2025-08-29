@@ -9,10 +9,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use App\Traits\LogsActivity;
 
 class Usermanagement extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithPagination, WithFileUploads, LogsActivity;
 
     protected $paginationTheme = 'bootstrap';
     protected $listeners = ['deleteConfirmed' => 'destroy'];
@@ -111,8 +112,9 @@ class Usermanagement extends Component
                 $imageName = 'pic_' . $user->id . '.' . $this->photo->getClientOriginalExtension();
                 $path = $this->photo->storeAs('photos', $imageName, 'public');
                 $user->update(['profile_photo_path' => $path]);
+                
             }
-
+            $this->logActivity("User '{$user->name}' profile updated");
             $this->dispatch('hide-user-modal');
             $this->dispatch('show-alert', type: 'success', message: 'User updated successfully!');
 
@@ -124,6 +126,7 @@ class Usermanagement extends Component
                 $path = $this->photo->storeAs('photos', $imageName, 'public');
                 $user->update(['profile_photo_path' => $path]);
             }
+            $this->logActivity("User '{$user->name}' has been created");
             $this->dispatch('hide-user-modal');
             $this->dispatch('show-alert', type: 'success', message: 'User created successfully!');
         }
@@ -144,6 +147,7 @@ class Usermanagement extends Component
         
         if ($user->profile_photo_path) {
             Storage::disk('public')->delete($user->profile_photo_path);
+            $this->logActivity("User '{$user->name}' deleted");
         }
 
         $this->dispatch('show-alert', type: 'success', message: 'User deleted successfully!');

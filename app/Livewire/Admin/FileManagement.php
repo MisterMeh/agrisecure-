@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
+use App\Traits\LogsActivity;
 
 class FileManagement extends Component
 {
-    use WithFileUploads, WithPagination;
+    use WithFileUploads, WithPagination, LogsActivity;
 
     public $search = '';
     public $sortname = 'file_name';
@@ -89,6 +90,7 @@ class FileManagement extends Component
             $updateData['encryption_key'] = $encryptionKey;
         }
 
+        $this->logActivity("User '".auth()->user()->name."' ".($this->isEditMode ? "updated" : "uploaded")." file '{$this->fileName}'");
         
         File::updateOrCreate(['id' => $this->selectedFile ? $this->selectedFile->id : null],
             array_merge($updateData, $this->isEditMode ? [] : ['created_by' => auth()->id()])
@@ -127,7 +129,9 @@ class FileManagement extends Component
             $key = $isAdmin ? $this->selectedFile->encryption_key : $this->decryptionKey;
             $decryptedContent = Crypt::decrypt(Storage::get($this->selectedFile->file_path), $key);
             $headers = ['Content-Type' => $this->selectedFile->file_type];
-        
+            
+            $this->logActivity("User '".auth()->user()->name."' downloaded file '{$this->selectedFile->file_name}'");
+
             return response()->streamDownload(function () use ($decryptedContent) {
                 echo $decryptedContent;
             }, $this->selectedFile->original_filename, $headers);

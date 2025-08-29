@@ -101,35 +101,35 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{-- route('reports.index') --}}" class="nav-link {{ (Request::is('*report*') ? 'active' : '') }}">
+                <a href="{{ route('audit-logs') }}" class="nav-link {{ (Request::is('*audit-logs*') ? 'active' : '') }}">
+                    <i class="nav-icon fas fa-clipboard-list"></i>
+                    <p>Audit Logs</p>
+                </a>
+            </li>
+            {{-- <li class="nav-item">
+                <a href="" class="nav-link {{ (Request::is('*report*') ? 'active' : '') }}">
                     <i class="nav-icon fas fa-chart-pie"></i>
                     <p>Reports</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{-- route('terms.index') --}}" class="nav-link {{ (Request::is('*terms-conditions*') ? 'active' : '') }}">
+                <a href="" class="nav-link {{ (Request::is('*terms-conditions*') ? 'active' : '') }}">
                     <i class="nav-icon fas fa-file-contract"></i>
                     <p>Terms & Conditions</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{-- route('settings.index') --}}" class="nav-link {{ (Request::is('*settings*') ? 'active' : '') }}">
+                <a href="" class="nav-link {{ (Request::is('*settings*') ? 'active' : '') }}">
                     <i class="nav-icon fas fa-cogs"></i>
                     <p>Settings</p>
                 </a>
-            </li>
+            </li> --}}
 
             @else
             <li class="nav-item">
                 <a href="{{ route('admin-file') }}" class="nav-link {{ (Request::is('*file-management*') ? 'active' : '') }}">
                     <i class="nav-icon fas fa-folder-open"></i>
                     <p>File Management</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{-- route('settings.index') --}}" class="nav-link {{-- (Request::is('*user-settings*') ? 'active' : '') --}}">
-                    <i class="nav-icon fas fa-cogs"></i>
-                    <p>Settings</p>
                 </a>
             </li>
             @endif

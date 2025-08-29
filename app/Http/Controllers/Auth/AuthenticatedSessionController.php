@@ -13,8 +13,11 @@ use App\Models\User;
 use App\Mail\TwoFactorCodeMail;
 use Illuminate\Support\Facades\Mail;
 
+use App\Traits\LogsActivity;
+
 class AuthenticatedSessionController extends Controller
 {
+    use LogsActivity;
     
     public function create(): View
     {
@@ -32,12 +35,18 @@ class AuthenticatedSessionController extends Controller
         ]);
         $request->authenticate();
         $user = Auth::user();
+
+        $this->logActivity("User '{$user->name}' logged in");
+
         $user->generateTwoFactorCode();
         try {
             Mail::to($user->email)->send(new TwoFactorCodeMail($user->two_factor_code));
         } catch (\Exception $e) {
+            //$this->logActivity("Failed to send 2FA code to user '{$user->name}'.");
             return redirect()->back()->withErrors(['email' => 'Could not send 2FA code. Please try again later.']);
         }
+
+
 
       
         $userId = $user->id;
