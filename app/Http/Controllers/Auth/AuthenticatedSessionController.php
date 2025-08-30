@@ -12,6 +12,7 @@ use Illuminate\View\View;
 use App\Models\User;
 use App\Mail\TwoFactorCodeMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 use App\Traits\LogsActivity;
 
@@ -24,7 +25,7 @@ class AuthenticatedSessionController extends Controller
         return view('auth.login');
     }
 
-   
+    
     public function store(LoginRequest $request): RedirectResponse
     {
        
@@ -33,6 +34,7 @@ class AuthenticatedSessionController extends Controller
         ], [
             'captcha.captcha' => 'Invalid captcha'
         ]);
+        
         $request->authenticate();
         $user = Auth::user();
 
@@ -42,11 +44,10 @@ class AuthenticatedSessionController extends Controller
         try {
             Mail::to($user->email)->send(new TwoFactorCodeMail($user->two_factor_code));
         } catch (\Exception $e) {
+            Log::error("Failed to send 2FA code to user '{$user->email}': " . $e->getMessage());
             //$this->logActivity("Failed to send 2FA code to user '{$user->name}'.");
             return redirect()->back()->withErrors(['email' => 'Could not send 2FA code. Please try again later.']);
         }
-
-
 
       
         $userId = $user->id;
@@ -60,6 +61,8 @@ class AuthenticatedSessionController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+        $this->logActivity("User '{$user->name}' logged out");
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

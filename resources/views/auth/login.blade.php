@@ -82,11 +82,11 @@
                                 {{ __('Remember me') }}
                             </label>
                         </div>
-                        @if (Route::has('password.request'))
+                        {{-- @if (Route::has('password.request'))
                             <div class="forgot-password">
                                 <a href="{{ route('password.request') }}">Forgot Password?</a>
                             </div>
-                        @endif
+                        @endif --}}
                     </div>
 
                     <button type="submit" class="btn btn-login">Login</button>
