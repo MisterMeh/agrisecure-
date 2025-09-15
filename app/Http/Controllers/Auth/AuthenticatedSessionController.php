@@ -46,6 +46,7 @@ class AuthenticatedSessionController extends Controller
         } catch (\Exception $e) {
             Log::error("Failed to send 2FA code to user '{$user->email}': " . $e->getMessage());
             //$this->logActivity("Failed to send 2FA code to user '{$user->name}'.");
+            Auth::logout();
             return redirect()->back()->withErrors(['email' => 'Could not send 2FA code. Please try again later.']);
         }
 

@@ -28,6 +28,7 @@ class FileManagement extends Component
 
     public function render()
     {
+        //Storage::disk('google')->write('test2.txt', 'Hello World!');
         $files = File::with(['createdBy', 'modifiedBy'])
         ->where('file_name', 'like', '%' . $this->search . '%')
         ->orderBy($this->sortname, $this->sortDirection)
@@ -78,11 +79,13 @@ class FileManagement extends Component
         
         if ($this->file) {
             $encryptionKey = Str::random(32);
+            //$encryptionKey = "";
             
             $filePath = $this->file->store('files');
             $encryptedContent = Crypt::encrypt(file_get_contents($this->file->getRealPath()), $encryptionKey);
-            Storage::put($filePath, $encryptedContent);
-
+            //Storage::put($filePath, $encryptedContent);
+            Storage::disk('google')->write($filePath, $encryptedContent);
+            
             $updateData['original_filename'] = $this->file->getClientOriginalName(); 
             $updateData['file_path'] = $filePath;
             $updateData['file_type'] = $this->file->getClientMimeType();
@@ -127,7 +130,8 @@ class FileManagement extends Component
 
         try {
             $key = $isAdmin ? $this->selectedFile->encryption_key : $this->decryptionKey;
-            $decryptedContent = Crypt::decrypt(Storage::get($this->selectedFile->file_path), $key);
+            //$decryptedContent = Crypt::decrypt(Storage::get($this->selectedFile->file_path), $key);
+            $decryptedContent = Crypt::decrypt(Storage::disk('google')->read($this->selectedFile->file_path), $key);
             $headers = ['Content-Type' => $this->selectedFile->file_type];
             
             $this->logActivity("User '".auth()->user()->name."' downloaded file '{$this->selectedFile->file_name}'");
@@ -155,7 +159,8 @@ class FileManagement extends Component
 
     public function deleteFile()
     {
-        Storage::delete($this->selectedFile->file_path);
+        //Storage::delete($this->selectedFile->file_path);
+        Storage::disk('google')->delete($this->selectedFile->file_path);
         $this->selectedFile->delete();
     }
 
