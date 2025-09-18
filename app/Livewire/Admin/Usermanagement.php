@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use App\Traits\LogsActivity;
+use Illuminate\Validation\Rules;
 
 class Usermanagement extends Component
 {
@@ -37,7 +38,14 @@ class Usermanagement extends Component
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($this->user_id)],
             'user_role' => 'required|integer|in:0,1',
             'photo' => 'nullable|image|mimes:jpg,png|max:2048', // Max 2MB
-            'password' => $this->isEditMode ? 'nullable|min:8|confirmed' : 'required|min:8|confirmed',
+            'password' => [
+                'required',
+                'confirmed',
+                Rules\Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+            ],
         ];
     }
 

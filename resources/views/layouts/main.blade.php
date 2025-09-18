@@ -49,14 +49,14 @@
                 </li>
             @endif
             
-            <li class="nav-item mr-3 d-flex align-items-center">
+            {{-- <li class="nav-item mr-3 d-flex align-items-center">
                 <a class="nav-link position-relative" href="#">
                     <i class="fas fa-bell text-dark"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">
                         0
                     </span>
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item text-lg">
                 <a class="nav-link" href="{{ route('logout') }}"
                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

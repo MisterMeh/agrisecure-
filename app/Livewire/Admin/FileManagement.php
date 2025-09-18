@@ -116,16 +116,42 @@ class FileManagement extends Component
         }
     }
 
+    
+    public function encyptedDownload()
+    {
+       
+        $encryptedContent = Storage::disk('google')->read($this->selectedFile->file_path);
+
+       
+        $originalFilename = $this->selectedFile->original_filename ?? 'file.txt';
+        $pathinfo = pathinfo($originalFilename);
+        $baseName = $pathinfo['filename'];
+        $extension = isset($pathinfo['extension']) ? '.' . $pathinfo['extension'] : '';
+        $encryptedFileName = "{$baseName}_encrypted{$extension}";
+        
+        
+        $headers = ['Content-Type' => 'application/octet-stream'];
+        
+        
+        $this->logActivity("User '".auth()->user()->name."' failed to decrypt and downloaded the encrypted file '{$this->selectedFile->file_name}'");
+
+    
+        return response()->streamDownload(function () use ($encryptedContent) {
+            echo $encryptedContent;
+        }, $encryptedFileName, $headers);
+        
+    }
+
     public function decryptAndDownload($isAdmin = false)
     {
-        if (!$isAdmin) {
+        /* if (!$isAdmin) {
             $this->validate(['decryptionKey' => 'required|string']);
-        }
+        } */
 
 
         if (!$isAdmin && $this->decryptionKey !== $this->selectedFile->encryption_key) {
-            $this->addError('decryptionKey', 'Invalid decryption key.');
-            return;
+            //$this->addError('decryptionKey', 'Invalid decryption key.');
+            return $this->encyptedDownload();
         }
 
         try {
@@ -161,6 +187,8 @@ class FileManagement extends Component
     {
         //Storage::delete($this->selectedFile->file_path);
         Storage::disk('google')->delete($this->selectedFile->file_path);
+        $this->logActivity("User '".auth()->user()->name."' deleted file '{$this->selectedFile->file_name}'");
+
         $this->selectedFile->delete();
     }
 
