@@ -39,6 +39,7 @@
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" wire:click="accountrole(0)" href="#">Employee</a>
                                     <a class="dropdown-item" wire:click="accountrole(1)" href="#">Admin</a>
+                                    <a class="dropdown-item" wire:click="accountrole(10)" href="#">Super Admin</a>
                                 </div>
                             </div>
                             {{-- <button class="btn btn-outline-secondary">
@@ -86,7 +87,9 @@
                                 <td>
                                     
                                     <button class="btn btn-link text-success px-2" wire:click="editUser({{ $item->id }})"><i class="fas fa-pencil-alt"></i></button>
-                                    <button class="btn btn-link text-danger px-2" wire:click="confirmDelete({{ $item->id }})"><i class="fas fa-trash"></i></button>
+                                    @if($item->role != 10)
+                                        <button class="btn btn-link text-danger px-2" wire:click="confirmDelete({{ $item->id }})"><i class="fas fa-trash"></i></button>
+                                    @endif
                                 </td>
                             </tr>
                             @empty

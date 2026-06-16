@@ -1,8 +1,8 @@
 @extends('layouts.main')
 
-@section('title', 'Dashboard')
+@section('title', 'File Management')
 @section('page_title', 'File Management')
 
 @section('content')
-    @livewire('admin.filemanagement')
+    @livewire('admin.file-management')
 @endsection

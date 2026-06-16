@@ -6,10 +6,11 @@
     <title>@yield('title', 'AgriSecure Admin')</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/custom-css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/vendor/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/vendor/adminlte/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/assets/custom-css/main.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/logoicon.png') }}">
     
     @livewireStyles
 </head>
@@ -40,14 +41,13 @@
                     <img class="img-circle img-xl mr-2" width="45px" height="45px" src="https://placehold.co/40x40/838584/ffffff?text={{ $initials }}" alt="User Image">
                 @endif
             </li>
-            @if (auth()->user()->role > 0)
-                <li class="nav-item mr-4">
-                    <div class="d-flex flex-column align-items-start">
-                        <span style="font-size: 1rem;">{{ auth()->user()->name }}</span>
-                        <span style="font-size: 0.85rem; color: #6c757d;">{{ auth()->user()->role == 0 ? 'Employee' : 'Admin' }}</span>
-                    </div>
-                </li>
-            @endif
+            
+            <li class="nav-item mr-4">
+                <div class="d-flex flex-column align-items-start">
+                    <span style="font-size: 1rem;">{{ auth()->user()->name }}</span>
+                    <span style="font-size: 0.85rem; color: #6c757d;">{{ auth()->user()->role == 0 ? 'Employee' : (auth()->user()->role == 1 ? 'Admin' : 'Super Admin') }}</span>
+                </div>
+            </li>
             
             {{-- <li class="nav-item mr-3 d-flex align-items-center">
                 <a class="nav-link position-relative" href="#">
@@ -71,7 +71,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
     <div class="col-12 justify-content-center text-center mt-2" style="margin-left: -10px">
-        <img src="{{ asset('images/logo.jpg') }}" alt="AgriSecure Logo"
+        <img src="{{ asset('public/images/logo.jpg') }}" alt="AgriSecure Logo"
         class="ml-3 text-dark"
         style="opacity: .8; width:60%;">
     </div>
@@ -106,6 +106,12 @@
                     <p>Audit Logs</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.requests') }}" class="nav-link {{ (Request::is('*requests*') ? 'active' : '') }}">
+                    <i class="nav-icon fas fa-inbox"></i>
+                    <p>Request Management</p>
+                </a>
+            </li>
             {{-- <li class="nav-item">
                 <a href="" class="nav-link {{ (Request::is('*report*') ? 'active' : '') }}">
                     <i class="nav-icon fas fa-chart-pie"></i>
@@ -124,6 +130,7 @@
                     <p>Settings</p>
                 </a>
             </li> --}}
+            
 
             @else
             <li class="nav-item">
@@ -164,9 +171,9 @@
 </footer> --}}
 
 
-<script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
+<script src="{{ asset('public/vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('public/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('public/vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
 @livewireScripts
 </body>
 </html>

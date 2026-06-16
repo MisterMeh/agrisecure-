@@ -1,6 +1,17 @@
 <div class="mx-3 my-3">
     <div class="row">
         <div class="col-12">
+            
+            {{-- Session Message (Added from my previous suggestion, good for feedback) --}}
+            @if (session()->has('message'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('message') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
             <div class="col-12 mb-3">
                 <div class="row align-items-center">
                     <div class="d-flex align-items-center px-3 py-1 mb-3 flex-grow-1" style="background-color: #def5e2; border-radius: 18px; min-width: 0;">
@@ -8,12 +19,16 @@
                          placeholder="Search by file name" style="min-width: 0; width: 100%; height: 32px;">
                         <i class="fas text-dark fa-search fa-lg ml-2 pt-2" style="height: 32px;"></i>
                     </div>
-                    <div class="ml-3 mb-3" style="flex-shrink: 0; background-color: #def5e2; border-radius: 18px; ">
-                        <button type="button" class="mx-2 btn btn-link text-dark p-0" style="height: 32px;" 
-                        wire:click="addFile()">
-                            <span class="ml-2">Add File</span> <i class="fas fa-plus-circle text-success pl-2 pr-1" ></i> 
-                        </button>
-                    </div>
+                    
+                    {{-- Admin-only Add Button --}}
+                    @if(auth()->user()->role == 1 || \Auth::user()->role == 10)
+                        <div class="ml-3 mb-3" style="flex-shrink: 0; background-color: #def5e2; border-radius: 18px; ">
+                            <button type="button" class="mx-2 btn btn-link text-dark p-0" style="height: 32px;" 
+                            wire:click="addFile()">
+                                <span class="ml-2">Upload File</span> <i class="fas fa-plus-circle text-success pl-2 pr-1" ></i> 
+                            </button>
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="card" style="background-color: #def5e2; border-radius: 12px; box-shadow: none; border: 0px solid #c8e6c9;">
@@ -40,10 +55,18 @@
                             <tr>
                                 <th style="width: 5%">#</th>
                                 <th>File Name</th>
+                                <th>File Type</th>
                                 <th>Created By</th>
+                                
+                                {{-- CHANGE 1: New Status Header for Employees --}}
+                               
+
                                 <th>Date Created</th>
                                 <th>Modified By</th>
                                 <th>Date Modified</th>
+                                 @if(auth()->user()->role != 1 || \Auth::user()->role != 10)
+                                    <th>Status</th>
+                                @endif
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -52,6 +75,26 @@
                             <tr>
                                 <td>{{ $files->firstItem() + $index }}</td>
                                 <td>{{ $item->file_name }}</td>
+                                @php
+                                    $ext = strtolower(pathinfo($item->file_path, PATHINFO_EXTENSION));
+                                    if (in_array($ext, ['xlsx', 'xls'])) {
+                                        $type = 'Excel';
+                                        $icon = 'fa-file-excel text-success'; // Green
+                                    } elseif ($ext === 'pdf') {
+                                        $type = 'PDF';
+                                        $icon = 'fa-file-pdf text-danger'; // Red
+                                    } elseif (in_array($ext, ['pptx', 'ppt'])) {
+                                        $type = 'PowerPoint';
+                                        $icon = 'fa-file-powerpoint text-warning'; // Orange
+                                    } elseif (in_array($ext, ['docx', 'doc'])) {
+                                        $type = 'Word';
+                                        $icon = 'fa-file-word text-primary'; // Blue
+                                    } else {
+                                        $type = 'Unknown';
+                                        $icon = 'fa-file text-secondary'; // Gray
+                                    }
+                                @endphp
+                                <td><i class="fas {{ $icon }} mr-2"></i>{{ $type }}</td>
                                 <td>
                                     @if($item->createdBy->profile_photo_path)
                                         <img class="img-circle img-sm mr-2" src="{{ asset('storage/' . $item->createdBy->profile_photo_path) }}" alt="User Image">
@@ -60,6 +103,10 @@
                                     @endif
                                     {{ $item->createdBy->name }}
                                 </td>
+
+                                {{-- CHANGE 2: New Status Data for Employees --}}
+                                
+
                                 <td>{{ $item->created_at->format('M d, Y') }}</td>
                                 <td>
                                     @if($item->modifiedBy->profile_photo_path)
@@ -70,18 +117,90 @@
                                     {{ $item->modifiedBy->name }}
                                 </td>
                                 <td>{{ $item->updated_at->format('M d, Y') }}</td>
+                                @if(auth()->user()->role != 1 || \Auth::user()->role != 10)
+                                    <td>
+                                        @php
+                                            $userRequest = $item->requests->first();
+                                            $status = $userRequest ? $userRequest->request_status : null;
+                                        @endphp
+                                        
+                                        @if ($status === 0)
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        @elseif ($status === 1)
+                                            <span class="badge bg-success">Granted</span>
+                                        @elseif ($status === 2)
+                                            <span class="badge bg-danger">Rejected</span>
+                                        @else
+                                            <span class="badge bg-secondary">Not Requested</span>
+                                        @endif
+                                    </td>
+                                @endif
+                                {{-- CHANGE 3: Updated Action Column --}}
                                 <td>
-                                    <button class="btn btn-link text-success px-2" wire:click="downloadFile({{ $item->id }})"><i class="fas fa-download"></i></button>
-                                    @if(auth()->user()->role == 1) 
-                                        <button class="btn btn-link text-info px-2" wire:click="viewFile({{ $item->id }})"><i class="fas fa-eye"></i></button>
-                                        <button class="btn btn-link text-primary px-2" wire:click="editFile({{ $item->id }})"><i class="fas fa-pencil-alt"></i></button>
-                                        <button class="btn btn-link text-danger px-2" wire:click="confirmDelete({{ $item->id }})"><i class="fas fa-trash"></i></button>
+                                    <button class="btn btn-link text-success px-2" wire:click="downloadFile({{ $item->id }})" title="Download">
+                                        <div wire:loading wire:target="downloadFile({{ $item->id }})">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                        </div>
+                                        <div wire:loading.remove wire:target="downloadFile({{ $item->id }})">
+                                            <i class="fas fa-download"></i>
+                                        </div>
+                                    </button>
+                                    
+                                    @if(auth()->user()->role == 1  || \Auth::user()->role == 10)  {{-- ADMIN ACTIONS --}}
+                                        <button class="btn btn-link text-info px-2" wire:click="viewFile({{ $item->id }})" title="View Details"><i class="fas fa-eye"></i></button>
+                                        <button class="btn btn-link text-warning px-2" wire:click="editFile({{ $item->id }})" title="Edit"><i class="fas fa-pencil-alt"></i></button>
+                                        <button class="btn btn-link text-danger px-2" wire:click="confirmDelete({{ $item->id }})" title="Delete"><i class="fas fa-trash"></i></button>
+                                    
+                                    @else  {{-- EMPLOYEE ACTIONS --}}
+                                        @php
+                                            // Re-check status for this button logic
+                                            $userRequest = $item->requests->first();
+                                            $status = $userRequest ? $userRequest->request_status : null;
+                                        @endphp
+
+                                        @if ($status === 1) {{-- 1: Granted --}}
+                                            <button class="btn btn-link text-info px-2" wire:click="showGrantedKey({{ $item->id }})" title="Show Key">
+                                                <i class="fas fa-key"></i>
+                                            </button>
+                                        @elseif ($status === 2) {{-- 2: Rejected --}}
+                                            <button class="btn btn-link text-warning px-2" wire:click="sendRequest({{ $item->id }})" title="Resend Request">
+                                                <i class="fas fa-redo"></i>
+                                            </button>
+                                        @elseif ($status === 0) {{-- 0: Pending --}}
+                                            <button class="btn btn-link text-secondary px-2" disabled title="Pending">
+                                                <i class="fas fa-clock"></i>
+                                            </button>
+                                        @else {{-- null: Not Requested --}}
+                                            <button class="btn btn-link text-primary px-2" wire:click="sendRequest({{ $item->id }})" title="Request Key">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </button>
+                                        @endif
                                     @endif
                                 </td>
                             </tr>
+
+                            {{-- CHANGE 4: New Inline Key Display Row --}}
+                            @if ($inlineKeyFileId == $item->id && !empty($inlineKey))
+                                <tr style="background-color: #f8f9fa;">
+                                    {{-- Use dynamic colspan --}}
+                                    <td colspan="{{ auth()->user()->role > 0 ? 7 : 8 }}"> 
+                                        <div class="alert alert-info d-flex justify-content-between align-items-center mb-0 py-2">
+                                            <div>
+                                                <strong>Decryption Key:</strong>
+                                                <code class="ml-2">{{ $inlineKey }}</code>
+                                            </div>
+                                            <button wire:click="closeKey" class="close" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
+
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center text-danger">No files found.</td>
+                                {{-- CHANGE 5: Dynamic Colspan for Empty Message --}}
+                                <td colspan="{{ auth()->user()->role > 0 ? 7 : 8 }}" class="text-center text-danger">No files found.</td>
                             </tr>
                             @endforelse
                         </tbody>

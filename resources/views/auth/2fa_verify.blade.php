@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/custom-css/front-panel.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/assets/custom-css/front-panel.css') }}">
 </head>
 <body>
 
     <div class="login-container">
-        <div class="left-panel" style="background-image: url('{{ asset('images/leftbox.png') }}');">
+        <div class="left-panel" style="background-image: url('{{ asset('public/images/leftbox.png') }}');">
             <div class="logo-container">
-                <img src="{{ asset('images/logo.jpg') }}" alt="AgriSecure Logo">
+                <img src="{{ asset('public/images/logo.jpg') }}" alt="AgriSecure Logo">
             </div>
         </div>
 

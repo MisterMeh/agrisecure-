@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AgriSecure Login</title>
-    <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/vendor/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/vendor/adminlte/dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> --}}
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/custom-css/front-panel.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/assets/custom-css/front-panel.css') }}">
 </head>
 <body>
 
     <div class="login-container">
        
-        <div class="left-panel" style="background-image: url('{{ asset('images/leftbox.png') }}');">
+        <div class="left-panel" style="background-image: url('{{ asset('public/images/leftbox.png') }}');">
             <div class="logo-container">
-                <img src="{{ asset('images/logo.jpg') }}" alt="AgriSecure Logo">
+                <img src="{{ asset('public/images/logo.jpg') }}" alt="AgriSecure Logo">
             </div>
         </div>
 
@@ -102,9 +102,9 @@
     </div>
 
     
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
+    <script src="{{ asset('public/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('public/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('public/vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
     <script type="text/javascript">
         $('#reload-captcha').click(function () {
             $.ajax({

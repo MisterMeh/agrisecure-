@@ -4,5 +4,5 @@
 @section('page_title', 'File Management')
 
 @section('content')
-    @livewire('admin.filemanagement')
+    @livewire('admin.file-management')
 @endsection
