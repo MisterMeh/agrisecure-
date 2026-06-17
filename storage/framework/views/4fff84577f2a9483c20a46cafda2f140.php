@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/custom-css/front-panel.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/custom-css/front-panel.css')); ?>">
 </head>
 <body>
 
     <div class="login-container">
-        <div class="left-panel" style="background-image: url('{{ asset('images/leftbox.png') }}');">
+        <div class="left-panel" style="background-image: url('<?php echo e(asset('images/leftbox.png')); ?>');">
             <div class="logo-container">
-                <img src="{{ asset('images/logo.jpg') }}" alt="AgriSecure Logo">
+                <img src="<?php echo e(asset('images/logo.jpg')); ?>" alt="AgriSecure Logo">
             </div>
         </div>
 
@@ -22,27 +22,27 @@
             <div class="login-form-container">
                 <span class="d-flex justify-content-center mb-3 mt-3"><h2>Create your account</h2></span>
 
-                @if ($errors->any())
+                <?php if($errors->any()): ?>
                     <div class="alert alert-danger mb-4">
                         <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li><?php echo e($error); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                <form method="POST" action="{{ route('register') }}">
-                    @csrf
+                <form method="POST" action="<?php echo e(route('register')); ?>">
+                    <?php echo csrf_field(); ?>
 
                     <div class="form-group">
                         <i class="fas fa-user login-color"></i>
-                        <input id="name" type="text" name="name" class="form-control" placeholder="Enter name" value="{{ old('name') }}" required autofocus autocomplete="name">
+                        <input id="name" type="text" name="name" class="form-control" placeholder="Enter name" value="<?php echo e(old('name')); ?>" required autofocus autocomplete="name">
                     </div>
 
                     <div class="form-group">
                         <i class="fas fa-envelope login-color"></i>
-                        <input id="email" type="email" name="email" class="form-control" placeholder="Enter email" value="{{ old('email') }}" required autocomplete="username">
+                        <input id="email" type="email" name="email" class="form-control" placeholder="Enter email" value="<?php echo e(old('email')); ?>" required autocomplete="username">
                     </div>
 
                     <div class="form-group">
@@ -61,7 +61,7 @@
                 </form>
 
                 <div class="register-link">
-                    Already a member? <a href="{{ route('login') }}">LOGIN HERE!</a>
+                    Already a member? <a href="<?php echo e(route('login')); ?>">LOGIN HERE!</a>
                 </div>
             </div>
         </div>
@@ -71,4 +71,4 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-</html>
+</html><?php /**PATH C:\Users\guieb\Downloads\public_html\resources\views/auth/register.blade.php ENDPATH**/ ?>

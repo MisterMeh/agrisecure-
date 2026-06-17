@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriSecure Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/front-panel.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="left-panel">
+            <div class="logo-container">
+                <img src="images/logo.jpg" alt="AgriSecure Logo">
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="login-form-container">
+                <h2>Create your account</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="name" class="form-control" placeholder="Enter name" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="email" class="form-control" placeholder="Enter email" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm password" required>
+                    </div>
+                    <button type="submit" class="btn-login">Register</button>
+                    <p class="terms-text">By signing up you agree to the terms and conditions.</p>
+                </form>
+                <div class="register-link">
+                    Already a member? <a href="index.html">LOGIN HERE!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            alert('Registration is not active on GitHub Pages. Use the demo login instead.');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

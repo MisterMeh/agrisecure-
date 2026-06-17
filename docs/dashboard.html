@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriSecure Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/front-panel.css">
+</head>
+<body>
+    <header class="site-nav">
+        <div class="brand">AgriSecure</div>
+        <div class="nav-links">
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="requests-management.html">Requests</a>
+            <a href="user-management.html">Users</a>
+            <a href="user-file-management.html">User Files</a>
+            <a href="admin-file-management.html">Admin Files</a>
+            <a href="audit-logs.html">Audit Logs</a>
+            <a href="index.html" class="logout-link">Logout</a>
+        </div>
+    </header>
+    <main class="content-panel">
+        <div class="dashboard-header">
+            <div>
+                <h1 class="section-title">Dashboard</h1>
+                <p>Static GitHub Pages preview of AgriSecure.</p>
+            </div>
+        </div>
+        <div class="card-grid">
+            <div class="info-card">
+                <h3>Recent Uploads</h3>
+                <div class="value">24</div>
+            </div>
+            <div class="info-card">
+                <h3>Total Files Uploaded</h3>
+                <div class="value">132</div>
+            </div>
+            <div class="info-card">
+                <h3>Registered Employees</h3>
+                <div class="value">58</div>
+            </div>
+        </div>
+        <div class="chart-panel">
+            <h3>Monthly File Uploads</h3>
+            <canvas id="uploadsChart"></canvas>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('uploadsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Uploads',
+                    backgroundColor: '#2f7f45',
+                    borderColor: '#2f7f45',
+                    borderWidth: 1,
+                    data: [12, 18, 9, 16, 22, 19, 24, 21, 18, 25, 23, 29]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 5
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

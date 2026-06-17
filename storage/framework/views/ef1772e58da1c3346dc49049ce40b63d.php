@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AgriSecure Login</title>
-    <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('vendor/fontawesome-free/css/all.min.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('vendor/adminlte/dist/css/adminlte.min.css')); ?>">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> --}}
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/custom-css/front-panel.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/custom-css/front-panel.css')); ?>">
 </head>
 <body>
 
     <div class="login-container">
        
-        <div class="left-panel" style="background-image: url('{{ asset('images/leftbox.png') }}');">
+        <div class="left-panel" style="background-image: url('<?php echo e(asset('images/leftbox.png')); ?>');">
             <div class="logo-container">
-                <img src="{{ asset('images/logo.jpg') }}" alt="AgriSecure Logo">
+                <img src="<?php echo e(asset('images/logo.jpg')); ?>" alt="AgriSecure Logo">
             </div>
         </div>
 
@@ -27,28 +27,29 @@
                 <span class="d-flex justify-content-center mb-3 mt-3"><h2>Welcome to <span class="font-weight-bold">AgriSecure</span></h2></span>
 
                 
-                @if (session('status'))
+                <?php if(session('status')): ?>
                     <div class="alert alert-success mb-4" role="alert">
-                        {{ session('status') }}
+                        <?php echo e(session('status')); ?>
+
                     </div>
-                @endif
+                <?php endif; ?>
                 
                
-                @if ($errors->any())
+                <?php if($errors->any()): ?>
                     <div class="alert alert-danger mb-4">
                         <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li><?php echo e($error); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                <form method="POST" action="{{ route('login') }}">
-                    @csrf
+                <form method="POST" action="<?php echo e(route('login')); ?>">
+                    <?php echo csrf_field(); ?>
                     <div class="form-group">
                         <i class="fas fa-envelope login-color"></i>
-                        <input type="email" name="email" class="form-control" placeholder="Enter email" value="{{ old('email') }}" required autofocus>
+                        <input type="email" name="email" class="form-control" placeholder="Enter email" value="<?php echo e(old('email')); ?>" required autofocus>
                     </div>
                     <div class="form-group">
                         <i class="fas fa-lock login-color"></i>
@@ -58,7 +59,7 @@
                     <!-- CAPTCHA -->
                     <!-- <div class="form-group">
                         <div class="captcha-container">
-                            <span id="captcha-img">{!! captcha_img('flat') !!}</span>
+                            <span id="captcha-img"><?php echo captcha_img('flat'); ?></span>
                             <i class="fas fa-sync-alt reload" id="reload-captcha"></i>
                         </div>
                         <input id="captcha" type="text" class="form-control" placeholder="Enter Captcha" name="captcha" required>
@@ -68,7 +69,7 @@
     <div id="captcha-section" >
         <div class="captcha-container-inline">
             
-            <span id="captcha-img">{!! captcha_img() !!}</span>
+            <span id="captcha-img"><?php echo captcha_img(); ?></span>
             
             <input id="captcha" type="text" class="form-control captcha-input" placeholder="Enter Captcha" name="captcha">
         </div>
@@ -79,14 +80,11 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="remember" id="remember_me">
                             <label class="form-check-label" for="remember_me">
-                                {{ __('Remember me') }}
+                                <?php echo e(__('Remember me')); ?>
+
                             </label>
                         </div>
-                        {{-- @if (Route::has('password.request'))
-                            <div class="forgot-password">
-                                <a href="{{ route('password.request') }}">Forgot Password?</a>
-                            </div>
-                        @endif --}}
+                        
                     </div>
 
                     <button type="submit" class="btn btn-login">Login</button>
@@ -95,21 +93,21 @@
                 </form>
 
                 <div class="register-link">
-                    New member, <a href="{{ route('register') }}">REGISTER HERE!</a>
+                    New member, <a href="<?php echo e(route('register')); ?>">REGISTER HERE!</a>
                 </div>
             </div>
         </div>
     </div>
 
     
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
+    <script src="<?php echo e(asset('vendor/jquery/jquery.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('vendor/bootstrap/js/bootstrap.bundle.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('vendor/adminlte/dist/js/adminlte.min.js')); ?>"></script>
     <script type="text/javascript">
         $('#reload-captcha').click(function () {
             $.ajax({
                 type: 'GET',
-                url: '{{ route("my-captcha.reload") }}',
+                url: '<?php echo e(route("my-captcha.reload")); ?>',
                 success: function (data) {
                     $("#captcha-img").html(data.captcha);
                 }
@@ -119,7 +117,7 @@
         $('#reload-captcha').click(function () {
         $.ajax({
             type: 'GET',
-            url: '{{ route("my-captcha.reload") }}',
+            url: '<?php echo e(route("my-captcha.reload")); ?>',
             success: function (data) {
                 $("#captcha-img").html(data.captcha);
             }
@@ -139,3 +137,4 @@
     </script>
 </body>
 </html>
+<?php /**PATH C:\Users\guieb\Downloads\public_html\resources\views/auth/login.blade.php ENDPATH**/ ?>

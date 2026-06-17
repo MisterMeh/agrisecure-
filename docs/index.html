@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriSecure Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/front-panel.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="left-panel">
+            <div class="logo-container">
+                <img src="images/logo.jpg" alt="AgriSecure Logo">
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="login-form-container">
+                <h2>Welcome to AgriSecure</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="email" class="form-control" placeholder="Enter email" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="remember_me">
+                            <label class="custom-control-label" for="remember_me">Remember me</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-login">Login</button>
+                    <p class="terms-text">By signing in you agree to the terms and conditions.</p>
+                </form>
+                <div class="register-link">
+                    New member, <a href="register.html">REGISTER HERE!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+</html>
